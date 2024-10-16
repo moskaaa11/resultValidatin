@@ -1,25 +1,87 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react'
+import './App.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { pushElements, clearCash } from './store/reducers/mainSlice'
 
-function App() {
+import Validation from './components/Validation'
+import { clearCashes } from './store/reducers/validatedData'
+
+
+const App = () => {
+
+  const [drag, setDrag] = useState(false)
+  const [files, setFiles] = useState()
+  const dispatch = useDispatch()
+  const data = useSelector(state=>state.main.data)
+
+
+  const dragStartHandler = (e) =>{
+    e.preventDefault()
+    setDrag(true)
+  }
+
+  const dragLeaveHandler = (e) =>{
+    e.preventDefault()
+    setDrag(false)
+  }
+
+  const onDropHandler = (e) => {
+    e.preventDefault()
+    setFiles([...e.dataTransfer.files])
+    setDrag(false)
+  }
+
+  useEffect(()=>{
+    if(files !== undefined){
+      for(let i =0; i < files.length; i++){
+        const reader = new FileReader()
+        reader.readAsText(files[i])
+        reader.onloadend = () => {
+          let obj = eval('({obj:' + reader.result + '})').obj
+          dispatch(pushElements({credential: obj}))
+        }
+      }
+    }
+  },[files])
+
+  const PrintHandler = () => {
+    console.log('print')
+    console.log(data)
+  }
+
+  const endHandler = () => {
+    dispatch(clearCash())
+    dispatch(clearCashes())
+    console.log('end')
+    console.log(data)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className='App'>
+      <Validation className='validation'/>
+      <div className='container'>
+        <button className='button' onClick={PrintHandler}>Роздрукувати Звіт</button>
+        <button className='button' onClick={endHandler}>Завершити</button> 
+      </div>
+      {drag
+      ? <div 
+          onDragStart={e=>dragStartHandler(e)}
+          onDragLeave={e=>dragLeaveHandler(e)}
+          onDragOver={e=>dragStartHandler(e)}
+          onDrop={e=>onDropHandler(e)}
+          className='drop-area'
         >
-          Learn React
-        </a>
-      </header>
+        Відпустіть файли щоб завантажити їх</div>
+      : <div 
+          onDragStart={e=>dragStartHandler(e)}
+          onDragLeave={e=>dragLeaveHandler(e)}
+          onDragOver={e=>dragStartHandler(e)}
+          className='drop-finish-area'
+        >
+          Перетягніть файли щоб завантажити їх</div>
+      }
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

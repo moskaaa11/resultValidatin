@@ -14,6 +14,7 @@ const Validation = () => {
             let arr = []
             rawData.forEach(item => {
                 let obj = {
+                    id: item.testResult.id,
                     instrument: {
                         id: item.testResult.instrument.serialNumber
                     },

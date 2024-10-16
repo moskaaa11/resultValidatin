@@ -19,7 +19,7 @@ const Validation = () => {
                         id: item.testResult.instrument.serialNumber
                     },
                     type: item.testResult.sampleTypeCode,
-                    dateResult: item.testResult.testCompletionDateUtc,
+                    dateResult: (new Date(item.testResult.testCompletionDateUtc)).getMonth() + 1,
                     result:{
                         type: item.testResult.tmResult.testID,
                         result: item.testResult.tmResult.testAnalysisTypes

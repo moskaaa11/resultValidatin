@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import './App.css'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { pushElements, clearCash } from './store/reducers/mainSlice'
-
-import Validation from './components/Validation'
 import { clearCashes } from './store/reducers/validatedData'
+import { clearedCashes } from './store/reducers/finalData'
+
+import './App.css'
+import Validation from './components/validation/Validation'
+import ResultFormation from './components/validation/ResultFormation'
+import ResultValidation from './components/validation/ResultValidation'
+import PrintFormating from './components/validation/PrintFormating'
 
 
 const App = () => {
@@ -12,7 +16,6 @@ const App = () => {
   const [drag, setDrag] = useState(false)
   const [files, setFiles] = useState()
   const dispatch = useDispatch()
-  const data = useSelector(state=>state.main.data)
 
 
   const dragStartHandler = (e) =>{
@@ -46,19 +49,21 @@ const App = () => {
 
   const PrintHandler = () => {
     console.log('print')
-    console.log(data)
   }
 
   const endHandler = () => {
     dispatch(clearCash())
     dispatch(clearCashes())
+    dispatch(clearedCashes())
     console.log('end')
-    console.log(data)
   }
 
   return (
     <div className='App'>
+      <ResultValidation className='validation'/>
+      <ResultFormation className='validation'/>
       <Validation className='validation'/>
+      <PrintFormating className='validation'/>
       <div className='container'>
         <button className='button' onClick={PrintHandler}>Роздрукувати Звіт</button>
         <button className='button' onClick={endHandler}>Завершити</button> 

@@ -11,7 +11,6 @@ const FinalData = createSlice({
         pushElements: (state,action) =>{
             state.final = true
             state.data = action.payload.credential
-            console.log(state.data)
         },
         clearedCashes: (state,action) => {
             state.final = false

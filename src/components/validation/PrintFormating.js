@@ -54,7 +54,6 @@ const PrintFormating = () => {
   useEffect(()=>{
     if(formatedData !== undefined){
       dispatch(pushElements({credential: formatedData}))
-      console.log('1')
     }
   },[formatedData])
 

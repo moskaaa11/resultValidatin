@@ -17,10 +17,8 @@ const ResultValidation = () => {
         if(finalData.length > 1){
             finalData.forEach(item=>{
                 if(item.type == '08 ABO(FWD/RVS)/Rh-00'){
-                    console.log(item.type)
                     setGroup(item.results)
                 } else if (item.type == '08 AbScr Surg Poly') {
-                    console.log(item.type)
                     setSurg(item.results)
                 }
             })
